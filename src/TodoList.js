@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
+import NewTodoForm from './NewTodoForm';
+import Todo from './Todo';
+import {v4 as uuid} from 'uuid';
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
-    this.state = {  };
+    this.state = { todos: [] };
+    this.newTodo = this.newTodo.bind(this);
   };
+  newTodo(todoContent) {
+    const newTodo = {
+      id:uuid(), todoContent,
+    };
+    this.setState({ todos: [...this.state.todos, newTodo] });
+  }
 
   render() {
     return (
@@ -12,7 +22,12 @@ class TodoList extends Component {
         <h1>ToDo List</h1>
         <p>A Simple React Todo List Application</p>
         <hr />
-        ===TODOs here===
+        {this.state.todos.map((todo) => {
+          return (
+            <Todo key={todo.id} id={todo.id} todoContent={todo.todoContent} />
+          );
+        })}
+        <NewTodoForm newTodo={this.newTodo} />
       </div>
     );
   }
